@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }}</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>{{ site_name }}</h1>
+            <p>{{ description }}</p>
+        </div>
+    </header>
+
+    <main class="container timeline">
+        {% for post in posts %}
+        <article class="post">
+            <div class="post-meta">
+                <time>{{ post.formatted_date }}</time>
+            </div>
+            <div class="post-content">
+                {{ post.content }}
+            </div>
+        </article>
+        {% endfor %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>{{ copyright }}</p>
+        </div>
+    </footer>
+</body>
+</html>

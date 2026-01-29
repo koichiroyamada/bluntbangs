@@ -1,0 +1,35 @@
+:root {
+    --bg-color: #f9f9f9;
+    --text-color: #333;
+    --accent-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    --card-bg: #ffffff;
+}
+body {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.8;
+}
+.container { max-width: 700px; margin: 0 auto; padding: 0 20px; }
+.site-header {
+    background: var(--accent-gradient);
+    color: white;
+    padding: 4rem 0 2rem;
+    margin-bottom: 3rem;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+.site-header h1 { margin: 0; font-size: 2.5rem; font-weight: 500; }
+.site-header p { opacity: 0.9; font-weight: 300; }
+.post {
+    background: var(--card-bg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+.post:hover { transform: translateY(-2px); }
+.post-meta time { font-size: 0.85rem; color: #888; font-weight: 700; display: block; margin-bottom: 0.5rem; }
+.post-content p { margin-top: 0; }
+.site-footer { text-align: center; padding: 3rem 0; font-size: 0.9rem; color: #666; border-top: 1px solid #eee; margin-top: 4rem; }
