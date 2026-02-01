@@ -1,37 +1,56 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site_name }}</title>
-    <link rel="stylesheet" href="static/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta name="author" content="bluntbangs">
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{{ site_url }}/feed.xml">
+  <link rel="canonical" href="{{ full_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-405M9FNRRJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-405M9FNRRJ');
+  </script>
+  <!-- OGP -->
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:type" content="{{ og_type }}">
+  <meta property="og:url" content="{{ full_url }}">
+  <meta property="og:image" content="{{ site_url }}/static/images/ogp.png">
+  <meta property="og:site_name" content="{{ site_name }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-    <header class="site-header">
-        <div class="container">
-            <h1>{{ site_name }}</h1>
-            <p>{{ description }}</p>
-        </div>
-    </header>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <h1 class="site-title"><a href="./">{{ site_name }}</a></h1>
+        <p class="site-description">{{ site_description }}</p>
+      </div>
+    </div>
+  </header>
 
-    <main class="container timeline">
-        {% for post in posts %}
-        <article class="post">
-            <div class="post-meta">
-                <time>{{ post.formatted_date }}</time>
-            </div>
-            <div class="post-content">
-                {{ post.content }}
-            </div>
-        </article>
-        {% endfor %}
-    </main>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
 
-    <footer class="site-footer">
-        <div class="container">
-            <p>{{ copyright }}</p>
-        </div>
-    </footer>
+  <footer class="site-footer">
+    <div class="container">
+      <p class="copyright">{{ copyright }}</p>
+      <nav class="footer-nav">
+        <a href="policy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>

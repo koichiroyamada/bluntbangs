@@ -1,6 +1,9 @@
-SITE_NAME = "My Thoughts"
-SITE_DESCRIPTION = "Just a collection of random texts."
-COPYRIGHT = "© 2024 Me."
+from datetime import datetime
+
+SITE_NAME = "bluntbangs"
+SITE_URL = "https://www.bluntbangs.com"
+SITE_DESCRIPTION = "このサイトはあれこれ試しているところです。"
+COPYRIGHT = f"© {datetime.now().year} bluntbangs"
 
 # パス設定
 CONTENT_DIR = "content"
