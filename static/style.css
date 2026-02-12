@@ -84,18 +84,82 @@ main {
   display: block;
 }
 
-/* 記事内の見出しスタイル */
-article h1, article h2, article h3 {
-  color: var(--primary-color);
-  margin-top: 2em;
-  margin-bottom: 1em;
+/* 記事本文のスタイル */
+.post-content {
+  font-size: 1.05rem;
+  line-height: 1.9;
 }
 
-article h2 {
-  font-size: 1.5em;
+.post-content h2 {
+  font-size: 1.6rem;
+  color: var(--primary-color);
   border-bottom: 2px solid var(--accent-color);
-  padding-bottom: 0.3em;
-  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-content h3 {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid var(--accent-color);
+  padding-left: 0.8rem;
+}
+
+.post-content p {
+  margin-bottom: 1.8rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 1.5rem 0;
+}
+
+.post-content blockquote {
+  border-left: 4px solid #ddd;
+  margin: 2rem 0;
+  padding: 1rem 1.5rem;
+  background-color: #f8f8f8;
+  color: #666;
+  font-style: italic;
+}
+
+.post-content pre {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  padding: 1.5rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+}
+
+.post-content code {
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  background-color: #f0f0f0;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.post-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.post-content ul, .post-content ol {
+  margin-bottom: 1.8rem;
+  padding-left: 2rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
 }
 
 /* Post Navigation */

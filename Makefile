@@ -24,7 +24,7 @@ serve:
 # ローカル開発モードでビルド＋サーバー起動
 dev:
 	@echo "Building in LOCAL_DEV mode..."
-	@LOCAL_DEV=true $(PYTHON) $(BUILD_SCRIPT) && \
+	@SITE_URL=http://localhost:$(PORT) LOCAL_DEV=true $(PYTHON) $(BUILD_SCRIPT) && \
 	echo "Starting server at http://localhost:$(PORT)" && \
 	cd $(OUTPUT_DIR) && $(PYTHON) -m http.server $(PORT)
 

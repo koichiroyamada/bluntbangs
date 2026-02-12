@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{{ site_url }}/</loc>
+    <changefreq>daily</changefreq>  <!-- トップページは毎日更新 -->
+    <priority>1.0</priority>
+  </url>
+  {% for post in posts %}
+  <url>
+    <loc>{{ post.full_url }}</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>{{ post.date.strftime('%Y-%m-%d') }}</lastmod>
+  </url>
+  {% endfor %}
+</urlset>

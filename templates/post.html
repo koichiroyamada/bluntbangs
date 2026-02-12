@@ -4,26 +4,28 @@
 <article class="post-card">
     <div class="post-meta"><time>{{ post.formatted_date }}</time></div>
     <h1 style="margin-top: 0;">{{ post.title }}</h1>
-    {{ post.content }}
+    <div class="post-content">
+        {{ post.content | safe }}
+    </div>
 </article>
 
 <nav class="post-nav">
     {% if post.older_post %}
-    <a href="{{ post.older_post.url }}" class="nav-link prev">
+    <a href="{{ post.older_post.url }}" class="nav-link prev" aria-label="Older post: {{ post.older_post.title }}">
         <span class="nav-label">Older</span>
         <span class="nav-title">{{ post.older_post.title }}</span>
     </a>
     {% else %}
-    <span class="nav-link placeholder"></span>
+    <div class="nav-link placeholder" aria-hidden="true"></div>
     {% endif %}
 
     {% if post.newer_post %}
-    <a href="{{ post.newer_post.url }}" class="nav-link next">
+    <a href="{{ post.newer_post.url }}" class="nav-link next" aria-label="Newer post: {{ post.newer_post.title }}">
         <span class="nav-label">Newer</span>
         <span class="nav-title">{{ post.newer_post.title }}</span>
     </a>
     {% else %}
-    <span class="nav-link placeholder"></span>
+    <div class="nav-link placeholder" aria-hidden="true"></div>
     {% endif %}
 </nav>
 
