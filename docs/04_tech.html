@@ -12,8 +12,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://www.bluntbangs.com/style.css">
+  <link rel="icon" href="https://www.bluntbangs.com/favicon.ico">
+  
   <!-- Global site tag (gtag.js) - Google Analytics -->
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-405M9FNRRJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -21,14 +24,36 @@
     gtag('js', new Date());
     gtag('config', 'G-405M9FNRRJ');
   </script>
+  
   <!-- OGP -->
   <meta property="og:title" content="次の一手：このSSGをどう育てるか | bluntbangs">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.bluntbangs.com/04_tech.html">
-  <meta property="og:image" content="https://www.bluntbangs.com/static/images/ogp.png">
+  
+  <meta property="og:image" content="https://www.bluntbangs.com/images/ogp.png">
+  
   <meta property="og:site_name" content="bluntbangs">
   <meta property="og:description" content="次の一手：このSSGをどう育てるか">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- JSON-LD Structured Data -->
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "次の一手：このSSGをどう育てるか",
+    "datePublished": "2024-01-23T00:00:00",
+    "description": "現在は非常にシンプルな構成ですが、拡張の余地は無限にあります。
+
+タグ機能: 記事が増えてきたら、関連する記事を繋げたくなるでしょう。
+画像処理: アップロードした画像を自動でWebPに変換したり、リ",
+    "author": {
+      "@type": "Person",
+      "name": "bluntbangs"
+    }
+  }
+  </script>
+  
 </head>
 <body>
   <header class="site-header">
@@ -45,7 +70,8 @@
 <article class="post-card">
     <div class="post-meta"><time>2024.01.23</time></div>
     <h1 style="margin-top: 0;">次の一手：このSSGをどう育てるか</h1>
-    <p>現在は非常にシンプルな構成ですが、拡張の余地は無限にあります。</p>
+    <div class="post-content">
+        <p>現在は非常にシンプルな構成ですが、拡張の余地は無限にあります。</p>
 <ul>
 <li><strong>タグ機能:</strong> 記事が増えてきたら、関連する記事を繋げたくなるでしょう。</li>
 <li><strong>画像処理:</strong> アップロードした画像を自動でWebPに変換したり、リサイズしたりする機能もPythonなら簡単です。</li>
@@ -53,18 +79,19 @@
 </ul>
 <p>でも、焦る必要はありません。
 「必要になったら作る（YAGNI）」の精神で、まずは記事を書くことを楽しみましょう。</p>
+    </div>
 </article>
 
 <nav class="post-nav">
     
-    <a href="03_design.html" class="nav-link prev">
+    <a href="03_design.html" class="nav-link prev" aria-label="Older post: 余白を読むデザイン">
         <span class="nav-label">Older</span>
         <span class="nav-title">余白を読むデザイン</span>
     </a>
     
 
     
-    <a href="05_collaboration.html" class="nav-link next">
+    <a href="05_collaboration.html" class="nav-link next" aria-label="Newer post: 共に創るということ">
         <span class="nav-label">Newer</span>
         <span class="nav-title">共に創るということ</span>
     </a>

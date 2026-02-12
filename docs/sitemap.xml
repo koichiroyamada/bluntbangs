@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.bluntbangs.com/</loc>
+    <changefreq>daily</changefreq>  <!-- トップページは毎日更新 -->
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.bluntbangs.com/05_collaboration.html</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>2024-01-24</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.bluntbangs.com/04_tech.html</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>2024-01-23</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.bluntbangs.com/03_design.html</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>2024-01-22</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.bluntbangs.com/02_simplicity.html</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>2024-01-21</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.bluntbangs.com/01_greeting.html</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>2024-01-20</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.bluntbangs.com/hello.html</loc>
+    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
+    <lastmod>2024-01-01</lastmod>
+  </url>
+  
+</urlset>
