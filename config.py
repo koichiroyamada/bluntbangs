@@ -8,5 +8,5 @@ COPYRIGHT = f"© {datetime.now().year} bluntbangs"
 # パス設定
 CONTENT_DIR = "content"
 TEMPLATE_DIR = "templates"
-OUTPUT_DIR = "public"
+OUTPUT_DIR = "docs"
 STATIC_DIR = "static"

@@ -4,7 +4,7 @@
 # 変数定義
 PYTHON := python3
 BUILD_SCRIPT := generate.py
-OUTPUT_DIR := public
+OUTPUT_DIR := docs
 PORT := 8000
 
 .PHONY: all build serve dev clean help
