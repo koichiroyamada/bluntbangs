@@ -7,39 +7,27 @@
   </url>
   
   <url>
-    <loc>https://www.bluntbangs.com/05_collaboration.html</loc>
+    <loc>https://www.bluntbangs.com/01_building_ssg_with_ai.html</loc>
     <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
-    <lastmod>2024-01-24</lastmod>
+    <lastmod>2026-02-17</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bluntbangs.com/04_tech.html</loc>
+    <loc>https://www.bluntbangs.com/02_python_ssg_mechanics.html</loc>
     <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
-    <lastmod>2024-01-23</lastmod>
+    <lastmod>2026-02-17</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bluntbangs.com/03_design.html</loc>
+    <loc>https://www.bluntbangs.com/03_digital_minimalism.html</loc>
     <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
-    <lastmod>2024-01-22</lastmod>
+    <lastmod>2026-02-17</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bluntbangs.com/02_simplicity.html</loc>
+    <loc>https://www.bluntbangs.com/04_letter_to_ai.html</loc>
     <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
-    <lastmod>2024-01-21</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.bluntbangs.com/01_greeting.html</loc>
-    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
-    <lastmod>2024-01-20</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.bluntbangs.com/hello.html</loc>
-    <changefreq>weekly</changefreq>  <!-- 記事は毎週更新 -->
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-02-17</lastmod>
   </url>
   
 </urlset>

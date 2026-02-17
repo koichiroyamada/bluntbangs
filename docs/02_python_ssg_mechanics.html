@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>たった100行の魔法：Python SSGの内部構造 | bluntbangs</title>
+  <meta name="description" content="たった100行の魔法：Python SSGの内部構造">
+  <meta name="author" content="bluntbangs">
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.bluntbangs.com/feed.xml">
+  <link rel="canonical" href="https://www.bluntbangs.com/02_python_ssg_mechanics.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.bluntbangs.com/style.css">
+  <link rel="icon" href="https://www.bluntbangs.com/favicon.ico">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-405M9FNRRJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-405M9FNRRJ');
+  </script>
+  
+  <!-- OGP -->
+  <meta property="og:title" content="たった100行の魔法：Python SSGの内部構造 | bluntbangs">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.bluntbangs.com/02_python_ssg_mechanics.html">
+  
+  <meta property="og:image" content="https://www.bluntbangs.com/images/ogp.png">
+  
+  <meta property="og:site_name" content="bluntbangs">
+  <meta property="og:description" content="たった100行の魔法：Python SSGの内部構造">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- JSON-LD Structured Data -->
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "たった100行の魔法：Python SSGの内部構造",
+    "datePublished": "2026-02-17T00:00:00",
+    "description": "シンプルさの極み
+前回の記事で「100行程度のスクリプト」と書きましたが、具体的にどのような仕組みで動いているのか、少し技術的な話をしましょう。
+この静的サイトジェネレーター（SSG）の構造は、驚くほ",
+    "author": {
+      "@type": "Person",
+      "name": "bluntbangs"
+    }
+  }
+  </script>
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <h1 class="site-title"><a href="./">bluntbangs</a></h1>
+        <p class="site-description">このサイトはあれこれ試しているところです。</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+<article class="post-card">
+    <div class="post-meta"><time>2026.02.17</time></div>
+    <h1 style="margin-top: 0;">たった100行の魔法：Python SSGの内部構造</h1>
+    <div class="post-content">
+        <h2>シンプルさの極み</h2>
+<p>前回の記事で「100行程度のスクリプト」と書きましたが、具体的にどのような仕組みで動いているのか、少し技術的な話をしましょう。</p>
+<p>この静的サイトジェネレーター（SSG）の構造は、驚くほど単純です。</p>
+<ol>
+<li><strong>Load:</strong> <code>content</code> ディレクトリ内のMarkdownファイルを読み込む。</li>
+<li><strong>Parse:</strong> ファイルの先頭にあるメタデータ（タイトルや日付）と本文を分離する。</li>
+<li><strong>Render:</strong> Jinja2テンプレートにデータを流し込み、HTMLを生成する。</li>
+<li><strong>Save:</strong> <code>docs</code> ディレクトリにHTMLファイルとして保存する。</li>
+</ol>
+<p>これだけです。データベースもなければ、複雑なルーティング処理もありません。</p>
+<hr />
+<h2>アーキテクチャの解剖</h2>
+<p>では、各ステップをコードレベルで掘り下げてみましょう。</p>
+<h3>1. Load &amp; Parse: メタデータの抽出</h3>
+<p>Markdownファイルの先頭には、YAML形式のようなメタデータを記述しています。これを解析するために、Pythonの標準ライブラリや正規表現を駆使することもできますが、今回は <code>python-markdown</code> ライブラリの <code>Meta</code> 拡張機能を使用しています。</p>
+<pre><code class="language-python">import markdown
+
+def parse_markdown(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        text = f.read()
+
+    # MarkdownをHTMLに変換しつつ、メタデータを抽出
+    md = markdown.Markdown(extensions=['meta'])
+    html_content = md.convert(text)
+
+    # メタデータは辞書型で返ってくる（値はリスト形式なので注意）
+    meta = md.Meta
+
+    return {
+        'title': meta.get('title', ['No Title'])[0],
+        'date': meta.get('date', ['1970-01-01'])[0],
+        'content': html_content,
+        'slug': file_path.stem  # ファイル名をURLの一部として使用
+    }
+</code></pre>
+<p>この関数のポイントは、ファイルシステム上の「ファイル」を、Pythonプログラムで扱いやすい「辞書オブジェクト」に変換している点です。一度辞書になってしまえば、あとはリストに格納して日付順にソートしたり、フィルタリングしたりと、Pythonの強力なリスト操作機能をフル活用できます。</p>
+<h3>2. Render: Jinja2によるHTML生成</h3>
+<p>HTMLの生成には、Python界隈でデファクトスタンダードとなっている <code>Jinja2</code> を採用しました。</p>
+<p>Jinja2の最大の強みは「テンプレートの継承」です。
+Webサイトには、ヘッダーやフッター、ナビゲーションなど、全ページで共通する部分があります。これらを <code>base.html</code> という親テンプレートに定義し、個別の記事ページ（<code>article.html</code>）では中身だけを差し替えるという手法をとります。</p>
+<p><strong>base.html (親):</strong></p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;{% block title %}{% endblock %} - My Blog&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;...&lt;/header&gt;
+    &lt;main&gt;
+        {% block content %}{% endblock %}
+    &lt;/main&gt;
+    &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>article.html (子):</strong></p>
+<pre><code class="language-html">{% extends &quot;base.html&quot; %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    &lt;article&gt;
+        &lt;h1&gt;{{ article.title }}&lt;/h1&gt;
+        &lt;time&gt;{{ article.date }}&lt;/time&gt;
+        &lt;div class=&quot;post-body&quot;&gt;
+            {{ article.content }}
+        &lt;/div&gt;
+    &lt;/article&gt;
+{% endblock %}
+</code></pre>
+<p>Python側では、このテンプレートに辞書データを渡すだけです。</p>
+<pre><code class="language-python">from jinja2 import Environment, FileSystemLoader
+
+env = Environment(loader=FileSystemLoader('templates'))
+template = env.get_template('article.html')
+
+html = template.render(article=article_data)
+</code></pre>
+<p>ロジック（Python）とデザイン（HTML/CSS）が完全に分離されているため、デザインを変更したいときはPythonコードを一切触る必要がありません。これがメンテナンス性の高さに繋がります。</p>
+<hr />
+<h3>依存ライブラリは最小限に</h3>
+<p>使用している外部ライブラリも厳選しました。</p>
+<ul>
+<li><code>markdown</code>: MarkdownテキストをHTMLに変換するため。</li>
+<li><code>jinja2</code>: HTMLのテンプレートエンジンのため。</li>
+</ul>
+<p>これらはPythonのエコシステムにおいて枯れた（安定した）技術であり、数年後に動かなくなるリスクは非常に低いです。</p>
+<p>Node.jsベースのSSG（GatsbyやNext.jsなど）は、<code>node_modules</code> フォルダが数百メガバイトに膨れ上がり、依存ライブラリのバージョン不整合に悩まされることが少なくありません。対して、私たちのSSGは <code>pip install</code> するライブラリが数個だけ。環境構築も一瞬で終わります。</p>
+<hr />
+<h3>なぜ自作するのか？</h3>
+<p>「車輪の再発明」は悪いことだとされがちです。しかし、学習目的や、自分だけの特別な要件がある場合には、再発明こそが最短の道になることがあります。</p>
+<p>既存のSSGは「あらゆる人のあらゆる要望」に応えるために肥大化しがちです。
+しかし、私たちが欲しいのは「このブログを表示するためだけの機能」です。</p>
+<p>例えば、このサイトにはコメント欄がありません。検索機能もありません。
+必要ないからです。</p>
+<p>機能がないということは、メンテナンスするコードが少ないということであり、バグが潜む場所が少ないということです。</p>
+<p>このシンプルさが、開発の速度と楽しさを支えています。
+100行のコードなら、週末の午後だけで書き上げることができます。そして、そのコードは完全にあなたのコントロール下にあります。もし「タグ機能が欲しい」と思えば、自分で実装すればいいのです。誰かが作ったプラグインを探す必要はありません。</p>
+<p>プログラミングの原点である「モノ作り」の喜びを、この小さなSSGは思い出させてくれます。</p>
+    </div>
+</article>
+
+<nav class="post-nav">
+    
+    <a href="03_digital_minimalism.html" class="nav-link prev" aria-label="Older post: デジタル・デトックスとしてのWeb開発">
+        <span class="nav-label">Older</span>
+        <span class="nav-title">デジタル・デトックスとしてのWeb開発</span>
+    </a>
+    
+
+    
+    <a href="01_building_ssg_with_ai.html" class="nav-link next" aria-label="Newer post: Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発">
+        <span class="nav-label">Newer</span>
+        <span class="nav-title">Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発</span>
+    </a>
+    
+</nav>
+
+<div style="text-align: center; margin-top: 2rem;"><a href="./">← Home</a></div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="copyright">© 2026 bluntbangs</p>
+      <nav class="footer-nav">
+        <a href="policy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
