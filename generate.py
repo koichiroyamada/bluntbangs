@@ -34,10 +34,6 @@ def generate():
 
     setup_output_dir(output_dir)
     
-    # ローカル開発モードの場合、URLを上書き
-    if os.environ.get('LOCAL_DEV'):
-        config.SITE_URL = f"http://localhost:8000"
-
     env = Environment(loader=FileSystemLoader(template_dir))
     index_template = env.get_template('index.html')
     post_template = env.get_template('post.html') # 記事用テンプレート
@@ -114,9 +110,6 @@ def generate():
             print(f"Error processing {md_file.name}: {e}")
 
     # 2. 日付順にソート（新しい順）
-    #   - postsをソートする前に、post_dateが実際にdatetimeオブジェクトであることを確認
-    #   - post_dateが無効な場合はエラーを報告
-
     posts.sort(key=lambda x: x['date'], reverse=True)
 
     # 3. 前後の記事へのリンク情報を付与して個別ページ生成
