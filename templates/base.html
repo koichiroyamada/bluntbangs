@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta name="author" content="bluntbangs">
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{{ site_url }}/feed.xml">
+  <link rel="canonical" href="{{ full_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ site_url }}/style.css">
+  <link rel="icon" href="{{ site_url }}/favicon.ico">
+  {% block extra_head %}{% endblock %}
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  {% if google_analytics_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ google_analytics_id }}');
+  </script>
+  {% endif %}
+  <!-- OGP -->
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:type" content="{{ og_type }}">
+  <meta property="og:url" content="{{ full_url }}">
+  {% if post and post.image %}
+  <meta property="og:image" content="{{ site_url }}{{ post.image }}">
+  {% else %}
+  <meta property="og:image" content="{{ site_url }}/images/ogp.png">
+  {% endif %}
+  <meta property="og:site_name" content="{{ site_name }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- JSON-LD Structured Data -->
+  {% if og_type == 'article' and post %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ post.title }}",
+    "datePublished": "{{ post.date.isoformat() }}",
+    "description": "{{ post.excerpt }}",
+    "author": {
+      "@type": "Person",
+      "name": "bluntbangs"
+    }
+  }
+  </script>
+  {% endif %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <h1 class="site-title"><a href="./">{{ site_name }}</a></h1>
+        <p class="site-description">{{ site_description }}</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="copyright">{{ copyright }}</p>
+      <nav class="footer-nav">
+        <a href="policy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

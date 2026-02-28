@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for post in posts %}
+  <article class="post-card">
+      <div class="post-meta"><time>{{ post.formatted_date }}</time></div>
+      <h2><a href="{{ post.url }}" style="text-decoration: none; color: inherit;">{{ post.title }}</a></h2>
+      <p>{{ post.excerpt }}...</p>
+      <div style="margin-top: 1rem;"><a href="{{ post.url }}">続きを読む &rarr;</a></div>
+  </article>
+  {% endfor %}
+{% endblock %}

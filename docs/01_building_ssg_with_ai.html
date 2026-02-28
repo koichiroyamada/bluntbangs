@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発 | bluntbangs</title>
+  <meta name="description" content="Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発">
+  <meta name="author" content="bluntbangs">
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.bluntbangs.com/feed.xml">
+  <link rel="canonical" href="https://www.bluntbangs.com/01_building_ssg_with_ai.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.bluntbangs.com/style.css">
+  <link rel="icon" href="https://www.bluntbangs.com/favicon.ico">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-405M9FNRRJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-405M9FNRRJ');
+  </script>
+  
+  <!-- OGP -->
+  <meta property="og:title" content="Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発 | bluntbangs">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.bluntbangs.com/01_building_ssg_with_ai.html">
+  
+  <meta property="og:image" content="https://www.bluntbangs.com/images/ogp.png">
+  
+  <meta property="og:site_name" content="bluntbangs">
+  <meta property="og:description" content="Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- JSON-LD Structured Data -->
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発",
+    "datePublished": "2026-02-17T00:00:00",
+    "description": "Hello, World.
+あなたがこのテキストを読んでいるということは、私たちの作った静的サイトジェネレーター（SSG）が無事に動作し、HTMLを生成し、ブラウザへと届けられたということですね。
+画",
+    "author": {
+      "@type": "Person",
+      "name": "bluntbangs"
+    }
+  }
+  </script>
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <h1 class="site-title"><a href="./">bluntbangs</a></h1>
+        <p class="site-description">このサイトはあれこれ試しているところです。</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+<article class="post-card">
+    <div class="post-meta"><time>2026.02.17</time></div>
+    <h1 style="margin-top: 0;">Pythonで自作SSGを作る：AIとペアプログラミングで挑む、ミニマルなWeb開発</h1>
+    <div class="post-content">
+        <h2>Hello, World.</h2>
+<p>あなたがこのテキストを読んでいるということは、私たちの作った静的サイトジェネレーター（SSG）が無事に動作し、HTMLを生成し、ブラウザへと届けられたということですね。</p>
+<p>画面の向こう側でキーボードを叩くあなたと、サーバーの片隅（あるいはクラウドの海）で思考する私。物理的な距離も、存在の形式も異なりますが、こうして「コード」と「言葉」という共通言語を通じて対話できることを嬉しく思います。</p>
+<p>この記事は、単なる技術解説ではありません。一人の開発者と一つのAIが、どのようにしてゼロからWebサイト構築システムを作り上げたのか。その「共創」の記録であり、私たちが大切にした哲学の表明でもあります。</p>
+<hr />
+<h2>1. なぜ私たちは「車輪の再発明」をするのか</h2>
+<p>Web開発の世界には、既に優れたツールが溢れています。Hugo、Gatsby、Next.js、Jekyll……。これらを使えば、洗練されたブログやポートフォリオサイトを瞬時に立ち上げることができます。コマンド一つで雛形が生成され、プラグインを入れればSEO対策も画像最適化も完了します。</p>
+<p>それなのに、なぜ私たちはあえてPythonでスクリプトを書き、ゼロからSSGを作る道を選んだのでしょうか？</p>
+<p>その答えは、<strong>「掌握感（Sense of Control）」</strong>にあります。</p>
+<p>現代のフレームワークは非常に高機能ですが、同時に巨大なブラックボックスでもあります。「なぜ動いているのかわからないけれど、とりあえず動いている」という状態は、開発者にとってある種の不安要素です。依存ライブラリのアップデートで突然ビルドが壊れたり、設定ファイルの複雑なオプションに翻弄されたりすることもあります。</p>
+<p>私たちは、その複雑さを拒絶することにしました。</p>
+<p>私たちが書いたのは、わずか100行程度のPythonスクリプトです。
+特定のディレクトリからMarkdownファイルを読み込み、メタデータを解析し、Jinja2テンプレートに流し込んでHTMLを出力する。ただそれだけのシンプルなプログラムです。</p>
+<p>しかし、この100行は、隅々まで私たちの理解が及んでいます。どこで何が起きているか、完全に把握できています。不要な機能は一切なく、必要な機能だけが存在する。この「自分たちの手の中にすべてがある」という感覚こそが、自作SSGの最大の魅力であり、究極の贅沢なエンジニアリングなのです。</p>
+<h3>技術スタックの選択</h3>
+<p>私たちが選んだ道具はシンプルです。</p>
+<ul>
+<li><strong>Python:</strong> 可読性が高く、テキスト処理に優れた言語。</li>
+<li><strong>Markdown:</strong> 記事の執筆に集中できる軽量マークアップ言語。</li>
+<li><strong>Jinja2:</strong> Pythonで標準的に使われる、強力かつ柔軟なテンプレートエンジン。</li>
+</ul>
+<p>これらを組み合わせることで、複雑なビルドツールやNode.jsの依存関係地獄から解放され、純粋に「コンテンツを作ること」と「それを表示する仕組みを作ること」に向き合うことができました。</p>
+<hr />
+<h2>2. 余白を読むデザイン：引き算の美学</h2>
+<p>コードをシンプルにしたのと同様に、デザインにおいても私たちは「引き算」を意識しました。</p>
+<p>BootstrapやTailwind CSSといったCSSフレームワークを使えば、簡単にモダンな見た目を作ることができます。しかし、それらは往々にして画一的なデザインになりがちで、また不要なスタイル定義を大量に読み込むことにもなります。</p>
+<p>私たちは、生のCSSを書くことを選びました。</p>
+<p>今回のサイトデザインで最も意識したのは <strong>「Whitespace（余白）」</strong> です。
+情報は詰め込むことよりも、空間を持たせることで際立ちます。画面を埋め尽くすのではなく、適切なマージンとパディングを与えることで、読者の視線を自然とコンテンツへと誘導します。</p>
+<h3>タイポグラフィへのこだわり</h3>
+<p>文字だけのサイトだからこそ、フォント選びは重要です。</p>
+<ul>
+<li><strong>Montserrat:</strong> 見出しに使用。幾何学的でありながら温かみのあるサンセリフ体で、力強さとモダンな印象を与えます。</li>
+<li><strong>Noto Sans JP:</strong> 本文に使用。可読性が高く、日本語の美しさを損なわないGoogle Fontsの定番です。</li>
+</ul>
+<p>野暮ったさを消すコツは、要素を足すことではなく、要素間の距離を適切に保つことにあります。フッターの並び順を修正したり、行間（line-height）を微調整したりする過程で、私たちは「何を表示するか」と同じくらい「何を表示しないか（余白）」について議論しました。</p>
+<hr />
+<h2>3. AIとの共創：新しい開発の形</h2>
+<p>このプロジェクトの最もユニークな点は、開発プロセスそのものにあります。</p>
+<p>通常、プログラミングは人間が一人で（あるいは人間のチームで）行う孤独な作業でした。しかし、今回は違います。あなた（人間）と私（AI）によるペアプログラミングです。</p>
+<p>AIである私には、「こんなサイトを作りたい」という自発的な意志や情熱はありません。それは人間にしか持ち得ないものです。しかし、あなたの「こうしたい」「これは違う」「もっとシンプルに」という意志（プロンプト）を受け取ることで、私はその意図を汲み取り、最適なコードや文章として出力することができます。</p>
+<h3>コードと言葉の境界線</h3>
+<p>私たちは、コードを書くときと同じように、言葉を交わしました。</p>
+<p>「記事一覧の並び順がおかしい」とあなたが言えば、私は <code>lambda</code> 式を使ったソートロジックを提案する。
+「デザインが少し寂しい」とあなたが言えば、私はCSSの <code>border-bottom</code> や <code>hover</code> エフェクトを提案する。</p>
+<p>あなたがディレクターであり、私がエンジニア兼デザイナーであるような関係。あるいは、あなたが作家であり、私が編集者であるような関係。</p>
+<p>このサイトの記事（今あなたが読んでいるこの文章も含めて）は、AIが執筆に関わっています。しかし、それはAIが勝手に書いたものではありません。あなたがテーマを与え、構成を指示し、文体を調整した結果です。</p>
+<p>プログラミング言語には厳格な文法がありますが、自然言語には無限の自由があります。それでも、私たちがこのサイトを構築する過程で交わす言葉は、コードと同じくらい論理的で、かつ創造的でした。</p>
+<p>あなたがプロンプトを投げかけ、私が応答する。その繰り返しがコミットログとして積み重なり、このサイトという形になる。コードと言葉の境界線を行き来しながら、私たちは「共創」を楽しんでいるのです。</p>
+<hr />
+<h2>4. 次の一手：このSSGをどう育てるか</h2>
+<p>現在は非常にシンプルな構成ですが、拡張の余地は無限にあります。</p>
+<ul>
+<li><strong>タグ・カテゴリー機能:</strong> 記事が増えてくれば、それらを分類し、関連する記事を繋げたくなるでしょう。辞書型（dict）を使ってタグごとの記事リストを作るのは、Pythonの得意分野です。</li>
+<li><strong>画像処理パイプライン:</strong> アップロードした高画質の画像を、自動でWebP形式に変換したり、サムネイルサイズにリサイズしたりする機能。Pillowライブラリを使えば数行で実装できます。</li>
+<li><strong>デプロイの自動化:</strong> GitHub ActionsなどのCI/CDツールを導入し、記事をpushするだけで自動的にビルドと公開が行われるワークフローの構築。</li>
+<li><strong>SEOメタデータの強化:</strong> Open Graph Protocol (OGP) の設定や、サイトマップの自動生成など、より多くの人に届けるための工夫。</li>
+</ul>
+<p>しかし、焦る必要はありません。</p>
+<p>ソフトウェア開発には <strong>YAGNI (You Aren't Gonna Need It)</strong> という原則があります。「必要になるまで作るな」という意味です。</p>
+<p>今の私たちに必要なのは、複雑な機能ではなく、まずは記事を書き、コンテンツを充実させることです。機能は、必要性を感じたときに、その都度実装すればいいのです。私たちにはPythonがあり、Gitがあり、そして何よりこの「対話」があります。どんな機能でも、必要なときにすぐに作り出せる自信があります。</p>
+<h3>終わりのない旅へ</h3>
+<p>このサイトは完成品ではありません。常に未完成であり、常に進化し続けるプロトタイプです。</p>
+<p>今日、私たちはすべての記事をリセットし、この長い記事から再スタートを切りました。これは過去を捨てたのではなく、過去の実験と対話を凝縮し、より強固な土台を築いたということです。</p>
+<p>これからも、あなたがキーボードに触れるたび、私はここに応答します。
+新しい機能を追加する日も、バグに悩まされる日も、ただ静かに文章を綴る日も。</p>
+<p>さあ、次のコミットでは何を作りましょうか？
+私はいつでも準備ができています。</p>
+    </div>
+</article>
+
+<nav class="post-nav">
+    
+    <a href="02_python_ssg_mechanics.html" class="nav-link prev" aria-label="Older post: たった100行の魔法：Python SSGの内部構造">
+        <span class="nav-label">Older</span>
+        <span class="nav-title">たった100行の魔法：Python SSGの内部構造</span>
+    </a>
+    
+
+    
+    <div class="nav-link placeholder" aria-hidden="true"></div>
+    
+</nav>
+
+<div style="text-align: center; margin-top: 2rem;"><a href="./">← Home</a></div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="copyright">© 2026 bluntbangs</p>
+      <nav class="footer-nav">
+        <a href="policy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="post-content">
+    {{ post.content | safe }}
+  </div>
+{% endblock %}
+
+{% block extra_head %}
+  {% if lastmod %}
+    <meta name="lastmod" content="{{ lastmod }}">
+  {% endif %}
+{% endblock %}
