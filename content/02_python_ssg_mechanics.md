@@ -1,109 +1,66 @@
-Title: たった100行の魔法：Python SSGの内部構造
-Date: 2026-02-17
+Title: 200行の宇宙
+Date: 2026-02-19
+Update: 2026-02-25
 
-## シンプルさの極み
+## 小さな巨人
 
-前回の記事で「100行程度のスクリプト」と書きましたが、具体的にどのような仕組みで動いているのか、少し技術的な話をしましょう。
+このWebサイトを生成しているプログラム `build.py` は、わずか200行程度のPythonスクリプトです。
+しかし、この小さなファイルの中には、Webサイト構築に必要なすべての宇宙が詰まっています。
 
-この静的サイトジェネレーター（SSG）の構造は、驚くほど単純です。
+仕組みは驚くほど単純です。
 
 1.  **Load:** `content` ディレクトリ内のMarkdownファイルを読み込む。
 2.  **Parse:** ファイルの先頭にあるメタデータ（タイトルや日付）と本文を分離する。
-3.  **Render:** Jinja2テンプレートにデータを流し込み、HTMLを生成する。
+3.  **Render:** テンプレート（`base.html`）にデータを流し込み、HTMLを生成する。
 4.  **Save:** `docs` ディレクトリにHTMLファイルとして保存する。
 
-これだけです。データベースもなければ、複雑なルーティング処理もありません。
+これだけです。データベースも、サーバーサイドの複雑な処理もありません。
+入力はテキストファイル、出力はHTMLファイル。純粋な関数のような変換プロセスです。
 
----
+## 巨人の肩に乗る
 
-## アーキテクチャの解剖
+もちろん、すべてをゼロから書いたわけではありません。私たちは、Pythonエコシステムという巨人の肩に乗っています。
 
-では、各ステップをコードレベルで掘り下げてみましょう。
+### Markdownの解析
 
-### 1. Load & Parse: メタデータの抽出
-
-Markdownファイルの先頭には、YAML形式のようなメタデータを記述しています。これを解析するために、Pythonの標準ライブラリや正規表現を駆使することもできますが、今回は `python-markdown` ライブラリの `Meta` 拡張機能を使用しています。
+SSGの核となるのは、テキストファイルを「データ」として扱う処理です。
+Pythonの `markdown` ライブラリを使えば、テキストの変換は一瞬です。さらに `Meta` 拡張機能を使うことで、ファイルの先頭に書かれた情報を辞書データとして取り出すことができます。
 
 ```python
 import markdown
 
-def parse_markdown(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        text = f.read()
-    
-    # MarkdownをHTMLに変換しつつ、メタデータを抽出
-    md = markdown.Markdown(extensions=['meta'])
-    html_content = md.convert(text)
-    
-    # メタデータは辞書型で返ってくる（値はリスト形式なので注意）
-    meta = md.Meta
-    
-    return {
-        'title': meta.get('title', ['No Title'])[0],
-        'date': meta.get('date', ['1970-01-01'])[0],
-        'content': html_content,
-        'slug': file_path.stem  # ファイル名をURLの一部として使用
-    }
+# サンプルテキスト
+source = """
+Title: Hello SSG
+Date: 2026-02-25
+
+# Hello, World!
+これはテスト記事です。
+"""
+
+# MarkdownをHTMLに変換しつつ、メタデータを抽出
+md = markdown.Markdown(extensions=['meta'])
+html = md.convert(source)
+meta = md.Meta
+
+print(meta['title']) # ['Hello SSG']
+print(html)          # <h1>Hello, World!</h1><p>これはテスト記事です。</p>
 ```
 
 この関数のポイントは、ファイルシステム上の「ファイル」を、Pythonプログラムで扱いやすい「辞書オブジェクト」に変換している点です。一度辞書になってしまえば、あとはリストに格納して日付順にソートしたり、フィルタリングしたりと、Pythonの強力なリスト操作機能をフル活用できます。
 
 ### 2. Render: Jinja2によるHTML生成
 
-HTMLの生成には、Python界隈でデファクトスタンダードとなっている `Jinja2` を採用しました。
+データの準備ができたら、次はHTMLの生成です。
+ここでは `Jinja2` というテンプレートエンジンを使っています。
 
-Jinja2の最大の強みは「テンプレートの継承」です。
-Webサイトには、ヘッダーやフッター、ナビゲーションなど、全ページで共通する部分があります。これらを `base.html` という親テンプレートに定義し、個別の記事ページ（`article.html`）では中身だけを差し替えるという手法をとります。
+仕組みは「手紙の宛名書き」に似ています。
+`base.html` という雛形（テンプレート）には、`{{ title }}` や `{{ content }}` といった「穴」が空いています。
+Pythonスクリプトは、Markdownから抽出したデータを、この穴に一つずつ埋めていきます。
 
-**base.html (親):**
-```html
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <title>{% block title %}{% endblock %} - My Blog</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>...</header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>...</footer>
-</body>
-</html>
-```
-
-**article.html (子):**
-```html
-{% extends "base.html" %}
-
-{% block title %}{{ article.title }}{% endblock %}
-
-{% block content %}
-    <article>
-        <h1>{{ article.title }}</h1>
-        <time>{{ article.date }}</time>
-        <div class="post-body">
-            {{ article.content }}
-        </div>
-    </article>
-{% endblock %}
-```
-
-Python側では、このテンプレートに辞書データを渡すだけです。
-
-```python
-from jinja2 import Environment, FileSystemLoader
-
-env = Environment(loader=FileSystemLoader('templates'))
-template = env.get_template('article.html')
-
-html = template.render(article=article_data)
-```
-
-ロジック（Python）とデザイン（HTML/CSS）が完全に分離されているため、デザインを変更したいときはPythonコードを一切触る必要がありません。これがメンテナンス性の高さに繋がります。
-
----
+この方式の利点は、デザインとロジックの完全な分離です。
+Pythonコードの中にHTMLタグを埋め込む必要はなく、逆にHTMLファイルの中に複雑なプログラムを書く必要もありません。
+デザイナー（あるいは未来の自分）は、HTMLとCSSだけを編集すればよく、Pythonコードを壊す心配がないのです。
 
 ### 依存ライブラリは最小限に
 
@@ -115,8 +72,6 @@ html = template.render(article=article_data)
 これらはPythonのエコシステムにおいて枯れた（安定した）技術であり、数年後に動かなくなるリスクは非常に低いです。
 
 Node.jsベースのSSG（GatsbyやNext.jsなど）は、`node_modules` フォルダが数百メガバイトに膨れ上がり、依存ライブラリのバージョン不整合に悩まされることが少なくありません。対して、私たちのSSGは `pip install` するライブラリが数個だけ。環境構築も一瞬で終わります。
-
----
 
 ### なぜ自作するのか？
 
