@@ -6,45 +6,45 @@ import config
 from datetime import datetime
 
 def build():
-    # 設定読み込み
+    # Load configuration
     content_dir = Path(config.CONTENT_DIR)
     output_dir = Path(config.OUTPUT_DIR)
     template_dir = Path(config.TEMPLATE_DIR)
     static_dir = Path(config.STATIC_DIR)
 
-    # 1. 出力ディレクトリを初期化（クリーンビルド）
+    # 1. Initialize output directory (clean build)
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # 2. テンプレートの準備
+    # 2. Prepare templates
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template('base.html')
 
-    # 日付整形用関数
+    # 日付整形用関数（英語形式: "Mar 29, 2026"）
     def fmt_iso(d):
         if not d: return ""
         try:
             dt = datetime.strptime(d, '%Y-%m-%d')
-            return dt.strftime('%Y-%m-%d')
+            return dt.strftime('%b %d, %Y')
         except ValueError: return d
 
-    # 3. Content（記事）をスキャンして情報を収集
+    # 3. Scan Content directory and collect metadata
     pages = []
     for md_file in sorted(content_dir.glob('*.md')):
         with open(md_file, 'r', encoding='utf-8') as f:
             text = f.read()
 
-        # Markdown変換（Meta情報取得付き）
+        # Convert Markdown (with metadata extraction)
         md = markdown.Markdown(extensions=['meta', 'fenced_code'])
         html_content = md.convert(text)
         meta = md.Meta if hasattr(md, 'Meta') else {}
 
-        # 下書きはスキップ
+        # Skip draft posts
         if meta.get('status', [''])[0].lower() == 'draft':
             continue
 
-        # メタデータ不足の警告
+        # Warn if metadata is missing
         if 'title' not in meta:
             print(f"Warning: '{md_file.name}' is missing 'Title'. Using filename.")
         if 'date' not in meta:
@@ -62,18 +62,18 @@ def build():
             'update_iso': fmt_iso(meta.get('update', [''])[0]),
         })
 
-    # 4. 記事リストを日付順（降順）にソート
-    # Static処理の前にソートすることで、index.html生成時に正しい順序のrecent_pagesを渡せる
+    # 4. Sort pages by date (descending)
+    # Sort before static processing to ensure correct order for index.html
     pages.sort(key=lambda x: x['meta'].get('date', [''])[0], reverse=True)
 
-    # トップページ用に更新日順（更新日がなければ作成日）でソートしたリストを作成
+    # Create sorted list for recent pages (by update date, or creation date if not updated)
     recent_pages = sorted(pages, key=lambda x: x['update_iso'] or x['date_iso'], reverse=True)[:5]
 
-    # 5. Static（固定生成）の処理
-    # mdファイル以外はコピー、mdファイルはHTMLに変換して配置
+    # 5. Process static files
+    # Copy non-Markdown files as-is; Markdown files are converted to HTML
     if static_dir.exists():
         for file_path in static_dir.rglob('*'):
-            # 出力先のパスを計算
+            # Calculate output path
             rel_path = file_path.relative_to(static_dir)
             dest_path = output_dir / rel_path
 
@@ -82,54 +82,21 @@ def build():
                 continue
 
             if file_path.suffix == '.md':
-                # Markdownなら変換してHTML配置
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    text = f.read()
-                
-                md = markdown.Markdown(extensions=['meta', 'fenced_code'])
-                html_content = md.convert(text)
-                meta = md.Meta if hasattr(md, 'Meta') else {}
-                
-                # 出力ファイル名を .html に変更
-                dest_html_path = dest_path.with_suffix('.html')
-
-                # 日付データの生成
-                date_iso = fmt_iso(meta.get('date', [''])[0])
-                update_iso = fmt_iso(meta.get('update', [''])[0])
-                
-                context = {
-                    'site_name': config.SITE_NAME,
-                    'title': meta.get('title', [file_path.stem])[0],
-                    'page_title': f"{meta.get('title', [file_path.stem])[0]} | {config.SITE_NAME}",
-                    'content': html_content,
-                    'meta': meta,
-                    'copyright': config.COPYRIGHT,
-                    'google_analytics_id': config.GOOGLE_ANALYTICS_ID,
-                    'menu_items': config.MENU_ITEMS,
-                    'all_pages': pages, # 記事リストも渡しておく
-                    'recent_pages': recent_pages, # 最新記事リスト（更新日順）
-                    'date_iso': date_iso,
-                    'update_iso': update_iso,
-                    'current_url': str(dest_html_path.relative_to(output_dir)).replace('\\', '/'),
-                }
-                
-                output_html = template.render(context)
-                with open(dest_html_path, 'w', encoding='utf-8') as f:
-                    f.write(output_html)
+                continue  # Don't process .md files (migrated to content/)
             else:
-                # それ以外（画像、CSSなど）はそのままコピー
+                # Copy other files (images, CSS, etc.) as-is
                 shutil.copy2(file_path, dest_path)
 
-    # 6. Content（記事）の各ページを生成
+    # 6. Generate each content page
     count = 0
     for i, page in enumerate(pages):
-        # 前後の記事を取得 (pagesは降順: 新しい -> 古い)
-        # newer (新しい記事) は index が小さい方
+        # Get adjacent pages (pages are sorted newest to oldest)
+        # newer_post has smaller index
         newer_post = pages[i-1] if i > 0 else None
-        # older (古い記事) は index が大きい方
+        # older_post has larger index
         older_post = pages[i+1] if i < len(pages) - 1 else None
 
-        # テンプレートに渡すデータ
+        # Prepare data for template
         context = {
             'site_name': config.SITE_NAME,
             'title': page['title'],
@@ -148,13 +115,13 @@ def build():
             'current_url': page['url'],
         }
 
-        # HTML書き出し
+        # Write HTML output
         output_html = template.render(context)
         with open(output_dir / page['url'], 'w', encoding='utf-8') as f:
             f.write(output_html)
         count += 1
 
-    # 7. アーカイブページの生成
+    # 7. Generate archive page
     archive_list_html = '<ul class="archive-list">'
     for page in pages:
         date_html = f'<span class="date">{page["date_iso"]}</span>'
@@ -179,10 +146,10 @@ def build():
     with open(output_dir / 'archive.html', 'w', encoding='utf-8') as f:
         f.write(template.render(archive_context))
 
-    # 8. index.html の自動生成（static/index.md がない場合のプレースホルダー）
+    # 8. Auto-generate index.html if not already created by processing content files
     if not (output_dir / 'index.html').exists():
         recent_posts_html = '<ul class="archive-list">'
-        # 簡易的にリストの上位を表示
+        # Display recent posts
         for page in recent_pages:
             recent_posts_html += f'<li><div class="date-container"><span class="date">{page["date_iso"]}</span></div><a href="{page["url"]}">{page["title"]}</a></li>'
         recent_posts_html += "</ul>"

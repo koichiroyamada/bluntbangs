@@ -1,0 +1,13 @@
+SITE_NAME: bluntbangs
+GOOGLE_ANALYTICS_ID: G-405M9FNRRJ
+
+MENU_ITEMS:
+  - name: Home
+    url: index.html
+  - name: Archives
+    url: archive.html
+
+CONTENT_DIR: content
+TEMPLATE_DIR: templates
+OUTPUT_DIR: docs
+STATIC_DIR: static
